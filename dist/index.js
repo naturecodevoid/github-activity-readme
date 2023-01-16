@@ -19918,7 +19918,10 @@ const exec = (cmd, args = []) =>
     const app = spawn(cmd, args, { stdio: "pipe" });
     let stdout = "";
     app.stdout.on("data", (data) => {
-      stdout = data;
+      stdout += data;
+    });
+    app.stderr.on("data", (data) => {
+      stdout += data;
     });
     app.on("close", (code) => {
       if (code !== 0 && !stdout.includes("nothing to commit")) {
