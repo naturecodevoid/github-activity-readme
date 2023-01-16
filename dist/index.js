@@ -19924,11 +19924,15 @@ const exec = (cmd, args = []) =>
       if (code !== 0 && !stdout.includes("nothing to commit")) {
         err = new Error(`Invalid status code: ${code}`);
         err.code = code;
+        tools.log.debug(stdout);
         return reject(err);
       }
       return resolve(code);
     });
-    app.on("error", reject);
+    app.on("error", (err) => {
+      tools.log.debug(stdout);
+      reject(err);
+    });
   });
 
 /**
